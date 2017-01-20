@@ -1,5 +1,3 @@
-import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
-
 /**
  * Something like Unix cal(1) in Java.
  *
