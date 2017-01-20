@@ -49,7 +49,7 @@ public class Calendar {
     /**
      * Determine if this is a leap year.
      *
-     * @param year
+     * @param year - Year to check.
      * @return true if year is a leap year, else false.
      */
     private static boolean isLeapYear(int year) {
@@ -60,7 +60,7 @@ public class Calendar {
      * Print the header lines for a month.
      *
      * @param month - Ordinal of month, January is 1.
-     * @param year
+     * @param year - In this year.
      */
     private static void printMonthHeader(int month, int year) {
         System.out.printf("  %s %d\n", monthNames[month - 1], year);
