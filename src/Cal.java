@@ -1,9 +1,12 @@
+import javax.swing.text.Style;
+import java.util.Calendar;
+
 /**
  * Something like Unix cal(1) in Java.
  *
  * Created by dlu on 19.01.2017.
  */
-public class Calendar {
+public class Cal {
     private static String[] monthNames = {
             "January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"
@@ -12,11 +15,50 @@ public class Calendar {
     private static String[] dayNames = {"Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"};
 
     public static void main(String[] args) {
-        int month = 2;
-        int year = 1904;
+        // Unix epoch, gotta start somewhere...
+        int month = 1;
+        int year = 1970;
 
+        switch (args.length) {
+            case 0:
+                // No command line arguments, generate calendar for current month.
+                Calendar now = Calendar.getInstance();
+                year = now.get(Calendar.YEAR);
+                month = now.get(Calendar.MONTH) + 1; // Result is zero based, we are using 1 for January.
+                break;
+            case 1:
+                // Year - print calendar for the whole year.
+                month = 0;
+                year = Integer.parseInt(args[0]);
+                break;
+            case 2:
+                // Month and Year - print calendar for that month.
+                month = Integer.parseInt(args[0]);
+                year = Integer.parseInt(args[1]);
+                break;
+            default:
+                System.out.printf("%s: don't know what to do with that much information\n", "Cal");
+                System.exit(-1);
+        }
+        System.out.printf("args = %d month = %d year = %d\n", args.length, month, year);
+
+        if (month == 0) {
+            printYear(year);
+        } else {
+            printMonth(month, year);
+        }
+        System.exit(0);
+    }
+
+    private static void printMonth(int month, int year) {
         printMonthHeader(month, year);
-        printMonth(4, daysInMonth(month, year));
+        printDays(4, daysInMonth(month, year));
+    }
+
+    private static void printYear(int year) {
+        for (int i = 0; i < 12; i++) {
+            printMonth(i + 1, year);
+        }
     }
 
     /**
@@ -74,7 +116,7 @@ public class Calendar {
      * @param start - First day of month, Sunday is 1.
      * @param days - Number of days in the month.
      */
-    private static void printMonth(int start, int days) {
+    private static void printDays(int start, int days) {
         for (int day = -(start - 2); day <= days; day++) {
             if (day < 1) {
                 // Empty space before start of month.
