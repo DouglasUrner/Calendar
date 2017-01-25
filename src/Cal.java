@@ -52,13 +52,27 @@ public class Cal {
 
     private static void printMonth(int month, int year) {
         printMonthHeader(month, year);
-        printDays(4, daysInMonth(month, year));
+        printDays(firstDay(month, year), daysInMonth(month, year));
     }
 
     private static void printYear(int year) {
         for (int i = 0; i < 12; i++) {
             printMonth(i + 1, year);
+            System.out.printf("\n");
         }
+    }
+
+    private static int firstDay(int month, int year) {
+        int baseYear = 1970;
+        int baseMonth = 1;
+        int baseFirstDay = 5;   // Thursday
+
+        for (int i = baseYear; i <= year; i++) {
+            for (int j = 1; j <= 12; j++) {
+
+            }
+        }
+        return 1;
     }
 
     /**
@@ -129,5 +143,6 @@ public class Cal {
                 System.out.printf("%4d%c", day, (day - (7 - (start - 1))) % 7 == 0 ? '\n' : ' ');
             }
         }
+        System.out.printf("\n");
     }
 }
