@@ -22,8 +22,8 @@ public class Calendar {
     /**
      * Return the number of days in a month.
      *
-     * @param month - Check this month, January is 1.
-     * @param year - For this year.
+     * @param month - Calculate days for this month, January is 1.
+     * @param year - Of this year.
      * @return integer number of days, checking for leap year.
      */
     private static int daysInMonth(int month, int year) {
