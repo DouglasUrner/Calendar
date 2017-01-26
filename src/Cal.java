@@ -149,7 +149,7 @@ public class Cal {
         for (String d : dayNames) {
             System.out.printf("  %s ", d);
         }
-        System.out.println();
+        System.out.printf("\n");
     }
 
     /**
@@ -165,16 +165,6 @@ public class Cal {
      * @param days - Number of days in the month.
      */
     private static void printDays(int start, int days) {
-        for (int day = 1; day <= days; day++) {
-            /*
-             * One way to keep the columns lined up is with System.out.printf(), another
-             * is to use System.out.println() and some if statements.
-             *
-             * Unfortunately this only works correctly as written if the month starts on a Sunday,
-             * but it is a start.
-             */
-            System.out.printf("%4d%c", day, day % 7 == 0 ? '\n' : ' ');
-        }
-        System.out.printf("\n"); // Final newline even if we don't reach the end of the week.
+        //
     }
 }
