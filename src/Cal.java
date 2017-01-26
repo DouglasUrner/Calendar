@@ -90,23 +90,7 @@ public class Cal {
      * @return - index of the first day of the week, Sunday == 1.
      */
     private static int firstDay(int month, int year) {
-        // Unix epoch, gotta start somewhere...
-        int baseYear = 1970;
-        int baseMonth = 1;
-        int baseFirstDay = 5;   // Thursday
-        int daysSinceFirst = 0;
-
-        if (month == baseMonth && year == baseYear) {
-            return baseFirstDay;
-        } else {
-            for (int i = baseYear; i < year; i++) {
-                daysSinceFirst += daysInYear(i);
-            }
-            for (int i = 1; i < month; i++) {
-                daysSinceFirst += daysInMonth(i, year);
-            }
-            return (daysSinceFirst + baseFirstDay) % 7;
-        }
+        return 1;
     }
 
     /**
@@ -117,29 +101,11 @@ public class Cal {
      * @return integer number of days, checking for leap year.
      */
     private static int daysInMonth(int month, int year) {
-        switch (month) {
-            case 2:
-                if (isLeapYear(year)) {
-                    return 29;
-                } else {
-                    return 28;
-                }
-            case 4:
-            case 6:
-            case 9:
-            case 11:
-                return 30;
-            default:
-                return 31;
-        }
+        return 31;
     }
 
     private static int daysInYear(int year) {
-        if (isLeapYear(year)) {
-            return 366;
-        } else {
-            return 365;
-        }
+        return 365;
     }
 
     /**
@@ -149,11 +115,14 @@ public class Cal {
      * @return true if year is a leap year, else false.
      */
     private static boolean isLeapYear(int year) {
-        return year % 400 == 0 || (year % 100 != 0 && year % 4 == 0);
+        return false;
     }
 
     /**
      * Print the header lines for a month.
+     *
+     *   January 2017
+     *   Su   Mo   Tu   We   Th   Fr   Sa
      *
      * @param month - Ordinal of month, January is 1.
      * @param year - In this year.
@@ -169,22 +138,49 @@ public class Cal {
     /**
      * Print the days for a calendar for a month.
      *
+     *    1    2    3    4    5    6    7
+     *    8    9   10   11   12   13   14
+     *   15   16   17   18   19   20   21
+     *   22   23   24   25   26   27   28
+     *   29   30   31
+     *
      * @param start - First day of month, Sunday is 1.
      * @param days - Number of days in the month.
      */
     private static void printDays(int start, int days) {
-        for (int day = -(start - 2); day <= days; day++) {
-            if (day < 1) {
-                // Empty space before start of month.
-                System.out.printf("     ");
-            } else if (day <= (7 - (start - 1))) {
-                // Possibly short first week.
-                System.out.printf("%4d%c", day, day == (7 - (start - 1)) ? '\n' : ' ');
-            } else {
-                // Full and last weeks.
-                System.out.printf("%4d%c", day, (day - (7 - (start - 1))) % 7 == 0 ? '\n' : ' ');
-            }
+        for (int day = 1; day <= days; day++) {
+            /*
+             * TL;DR - One way to keep the columns lined up is with System.out.printf(), another
+             * is to use System.out.println() and some if statements.
+             *
+             * System.out.printf() is the deluxe verison of println(). There is a bit of
+             * a learning curve, but once you learn how to harness its power you can do
+             * some cool stuff. The way it works is that you create a "format string" that
+             * is the template for what you want to print out. In the format string placeholders
+             * which begin with the percent sign, '%', are used to mark the location of the
+             * data you want to output. After the format string come the variables you want
+             * to output. The are listed in the same order that their placeholders appear in
+             * the format string.
+             *
+             * The format string here is "%4d%c". The "%4d" part says print an integer, as a
+             * decimal number in a field that is padded on the left so that it is a total of
+             * four spaces wide, including the number. The first day provides the value that
+             * goes in the field. When day is less than 10 the field is padded with four
+             * spaces on the left, when it is 10 or greater the padding is two spaces. This
+             * keeps the columns of the calendar lined up.
+             *
+             * The second part of the format string "%c" prints out a character. The expression
+             *
+             *   day % 7 == 0 ? '\n' : ' '
+             *
+             * returns an newline character (\n) if day is evenly divisible by 7, or a space if
+             * it is not.
+             *
+             * Unfortunately this only works correctly as written if the month starts on a Sunday,
+             * but it is a start.
+             */
+            System.out.printf("%4d%c", day, day % 7 == 0 ? '\n' : ' ');
         }
-        System.out.printf("\n");
+        System.out.printf("\n"); // Final newline even if we don't reach the end of the week.
     }
 }
