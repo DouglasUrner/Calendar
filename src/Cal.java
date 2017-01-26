@@ -15,16 +15,15 @@ public class Cal {
     private static String[] dayNames = {"Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"};
 
     public static void main(String[] args) {
-        // Unix epoch, gotta start somewhere...
-        int month = 1;
-        int year = 1970;
+        int month = 0;
+        int year = 0;
 
         switch (args.length) {
             case 0:
-                // No command line arguments, generate calendar for current month.
+                // No command line arguments, print calendar for current month.
                 Calendar now = Calendar.getInstance();
-                year = now.get(Calendar.YEAR);
                 month = now.get(Calendar.MONTH) + 1; // Result is zero based, we are using 1 for January.
+                year = now.get(Calendar.YEAR);
                 break;
             case 1:
                 // Year - print calendar for the whole year.
@@ -40,7 +39,6 @@ public class Cal {
                 System.out.printf("%s: don't know what to do with that much information\n", "Cal");
                 System.exit(-1);
         }
-        System.out.printf("args = %d month = %d year = %d\n", args.length, month, year);
 
         if (month == 0) {
             printYear(year);
@@ -63,16 +61,23 @@ public class Cal {
     }
 
     private static int firstDay(int month, int year) {
+        // Unix epoch, gotta start somewhere...
         int baseYear = 1970;
         int baseMonth = 1;
         int baseFirstDay = 5;   // Thursday
+        int daysSinceFirst = 0;
 
-        for (int i = baseYear; i <= year; i++) {
-            for (int j = 1; j <= 12; j++) {
-
+        if (month == baseMonth && year == baseYear) {
+            return baseFirstDay;
+        } else {
+            for (int i = baseYear; i < year; i++) {
+                daysSinceFirst += daysInYear(i);
             }
+            for (int i = 1; i < month; i++) {
+                daysSinceFirst += daysInMonth(i, year);
+            }
+            return (daysSinceFirst + baseFirstDay) % 7;
         }
-        return 1;
     }
 
     /**
@@ -97,6 +102,14 @@ public class Cal {
                 return 30;
             default:
                 return 31;
+        }
+    }
+
+    private static int daysInYear(int year) {
+        if (isLeapYear(year)) {
+            return 366;
+        } else {
+            return 365;
         }
     }
 
