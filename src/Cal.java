@@ -1,3 +1,4 @@
+import javax.swing.*;
 import javax.swing.text.Style;
 import java.util.Calendar;
 
@@ -18,6 +19,8 @@ public class Cal {
         int month = 0;
         int year = 0;
 
+        System.setErr(System.out);
+
         switch (args.length) {
             case 0:
                 // No command line arguments, print calendar for current month.
@@ -36,8 +39,14 @@ public class Cal {
                 year = Integer.parseInt(args[1]);
                 break;
             default:
-                System.out.printf("%s: don't know what to do with that much information\n", "Cal");
+                System.err.printf("%s: don't know what to do with that much information.", "Cal");
                 System.exit(-1);
+        }
+
+        if (year < 1970) {
+            // TODO: use baseYear. Make it global?
+            System.err.printf("%s: the year %d is before my time.", "Cal", year);
+            System.exit(-2);
         }
 
         if (month == 0) {
@@ -48,11 +57,24 @@ public class Cal {
         System.exit(0);
     }
 
+    /**
+     * Print calendar for a month.
+     *
+     * @param month - this month, January == 1.
+     * @param year - of this year.
+     */
     private static void printMonth(int month, int year) {
         printMonthHeader(month, year);
         printDays(firstDay(month, year), daysInMonth(month, year));
     }
 
+    /**
+     * Print a calendar for a whole year.
+     *
+     * TODO: use full screen width
+     *
+     * @param year - year to generate calendar for.
+     */
     private static void printYear(int year) {
         for (int i = 0; i < 12; i++) {
             printMonth(i + 1, year);
@@ -60,6 +82,13 @@ public class Cal {
         }
     }
 
+    /**
+     * Determine the day of the week for the first day of the month, Sunday == 1.
+     *
+     * @param month - this month.
+     * @param year - of this year.
+     * @return - index of the first day of the week, Sunday == 1.
+     */
     private static int firstDay(int month, int year) {
         // Unix epoch, gotta start somewhere...
         int baseYear = 1970;
@@ -138,7 +167,7 @@ public class Cal {
     }
 
     /**
-     * Print ASCII calendar for a month.
+     * Print the days for a calendar for a month.
      *
      * @param start - First day of month, Sunday is 1.
      * @param days - Number of days in the month.
