@@ -48,7 +48,7 @@ public class Cal {
                 System.exit(-1);
         }
 
-        if (year < 1970) {  // TODO: use baseYear. Make it global?
+        if (year < 1587) {  // TODO: make a constant.
             System.err.printf("%s: the year %d is before my time.", "Cal", year);
             System.exit(-2);
         }
