@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.swing.text.Style;
 import java.util.Calendar;
 
 /**
@@ -15,6 +14,11 @@ public class Cal {
 
     private static String[] dayNames = {"Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"};
 
+    /*
+     * Most of what happens here is deciding what to do. If we are called with no arguments
+     * we print the calendar for the current month, with one argument we print the calendar
+     * for that year, and with two the calendar for the month/year combination.
+     */
     public static void main(String[] args) {
         int month = 0;
         int year = 0;
@@ -44,8 +48,7 @@ public class Cal {
                 System.exit(-1);
         }
 
-        if (year < 1970) {
-            // TODO: use baseYear. Make it global?
+        if (year < 1970) {  // TODO: use baseYear. Make it global?
             System.err.printf("%s: the year %d is before my time.", "Cal", year);
             System.exit(-2);
         }
@@ -55,8 +58,8 @@ public class Cal {
         } else {
             printMonth(month, year);
         }
-        System.exit(0);
     }
+
 
     /**
      * Print calendar for a month.
@@ -72,13 +75,11 @@ public class Cal {
     /**
      * Print a calendar for a whole year.
      *
-     * TODO: use full screen width
-     *
      * @param year - year to generate calendar for.
      */
     private static void printYear(int year) {
-        for (int i = 0; i < 12; i++) {
-            printMonth(i + 1, year);
+        for (int i = 1; i <= 12; i++) {
+            printMonth(i, year);
             System.out.printf("\n");
         }
     }
@@ -105,9 +106,24 @@ public class Cal {
         return 31;
     }
 
+    /**
+     * Return number of days in the year.
+     *
+     * @param year - Year of interest.
+     * @return - Number of days.
+     */
     private static int daysInYear(int year) {
         return 365;
     }
+
+
+
+
+
+
+
+
+
 
     /**
      * Determine if this is a leap year.
@@ -151,31 +167,8 @@ public class Cal {
     private static void printDays(int start, int days) {
         for (int day = 1; day <= days; day++) {
             /*
-             * TL;DR - One way to keep the columns lined up is with System.out.printf(), another
+             * One way to keep the columns lined up is with System.out.printf(), another
              * is to use System.out.println() and some if statements.
-             *
-             * System.out.printf() is the deluxe verison of println(). There is a bit of
-             * a learning curve, but once you learn how to harness its power you can do
-             * some cool stuff. The way it works is that you create a "format string" that
-             * is the template for what you want to print out. In the format string placeholders
-             * which begin with the percent sign, '%', are used to mark the location of the
-             * data you want to output. After the format string come the variables you want
-             * to output. The are listed in the same order that their placeholders appear in
-             * the format string.
-             *
-             * The format string here is "%4d%c". The "%4d" part says print an integer, as a
-             * decimal number in a field that is padded on the left so that it is a total of
-             * four spaces wide, including the number. The first day provides the value that
-             * goes in the field. When day is less than 10 the field is padded with four
-             * spaces on the left, when it is 10 or greater the padding is two spaces. This
-             * keeps the columns of the calendar lined up.
-             *
-             * The second part of the format string "%c" prints out a character. The expression
-             *
-             *   day % 7 == 0 ? '\n' : ' '
-             *
-             * returns an newline character (\n) if day is evenly divisible by 7, or a space if
-             * it is not.
              *
              * Unfortunately this only works correctly as written if the month starts on a Sunday,
              * but it is a start.
