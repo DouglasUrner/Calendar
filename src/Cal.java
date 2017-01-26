@@ -165,6 +165,6 @@ public class Cal {
      * @param days - Number of days in the month.
      */
     private static void printDays(int start, int days) {
-        //
+
     }
 }
