@@ -25,7 +25,7 @@ public class Cal {
             case 0:
                 // No command line arguments, print calendar for current month.
                 Calendar now = Calendar.getInstance();
-                month = now.get(Calendar.MONTH) + 1; // Result is zero based, we are using 1 for January.
+                month = now.get(Calendar.MONTH) + 1; // They January is 0, we say 1.
                 year = now.get(Calendar.YEAR);
                 break;
             case 1:
@@ -39,6 +39,7 @@ public class Cal {
                 year = Integer.parseInt(args[1]);
                 break;
             default:
+                // Anything else is an error.
                 System.err.printf("%s: don't know what to do with that much information.", "Cal");
                 System.exit(-1);
         }
